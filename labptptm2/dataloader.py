@@ -1,14 +1,13 @@
 import os
 import io
 import h5py
-import numpy as np
 import dvc.api
-import tempfile
+import contextlib
 from pathlib import Path
 
 
 repo = 'https://github.com/remifan/LabPtPTm2'
-dump_dir = tempfile.TemporaryDirectory().name
+dump_dir = os.path.join(os.getcwd(), 'labptptm2_data')
 
 
 def load(src,
@@ -19,10 +18,9 @@ def load(src,
          local=True,
          dump=False):
 
-    with h5py.File(_read(_datapath(src, lp, ch, rep),
-                         local,
-                         dump),
-                   'r') as fd:
+    with _read(_datapath(src, lp, ch, rep),
+               local,
+               dump) as fd:
         y = fd['recv'][...]
         x = fd['sent'][...]
         a = dict(zip(fd.attrs.keys(), fd.attrs.values())) # extract hdf attributes
@@ -30,10 +28,9 @@ def load(src,
     data = {'recv': y, 'sent': x, 'attr': a}
 
     if supdata:
-        with h5py.File(_read(_supdatapath(src, lp, ch, rep),
-                             local,
-                             dump),
-                       'r') as fd:
+        with _read(_supdatapath(src, lp, ch, rep),
+                   local,
+                   dump) as fd:
             nfo = fd['nfo'][...]
             data['attr']['CD'] = fd.attrs['cd']
 
@@ -42,20 +39,22 @@ def load(src,
     return data
 
 
-def _read(path, local, dump):
+@contextlib.contextmanager
+def _read(path, local=True, dump=False):
     local_path = os.path.join(dump_dir, path)
     if os.path.exists(local_path) and local:
-        return local_path
+        file = local_path
     else:
-        raw_data = dvc.api.read(path,
-                                repo=repo,
-                                mode='rb')
+        raw_data = dvc.api.read(path, repo=repo, mode='rb')
         if dump:
             _dump(raw_data, local_path)
-        return io.BytesIO(raw_data)
+        file = io.BytesIO(raw_data)
+
+    with h5py.File(file, 'r') as fd:
+        yield fd
 
 
-def _dump(data, path, overwrite=False):
+def _dump(data, path):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'wb') as fd:
         fd.write(data)
