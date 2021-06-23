@@ -1,1 +1,1 @@
-from . import dataloader
+from .dataloader import load, config

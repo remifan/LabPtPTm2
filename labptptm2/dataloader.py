@@ -5,9 +5,13 @@ import dvc.api
 import contextlib
 from pathlib import Path
 
+_conf = {'repo': 'https://github.com/remifan/LabPtPTm2',
+        'dump_dir': os.path.join(os.getcwd(), 'labptptm2_data')}
 
-repo = 'https://github.com/remifan/LabPtPTm2'
-dump_dir = os.path.join(os.getcwd(), 'labptptm2_data')
+
+def config(**kwargs):
+    _conf.update(**kwargs)
+    return _conf.copy()
 
 
 def load(src,
@@ -16,7 +20,7 @@ def load(src,
          rep,
          supdata=False,
          local=True,
-         dump=False):
+         dump=True):
 
     with _read(_datapath(src, lp, ch, rep),
                local,
@@ -40,12 +44,12 @@ def load(src,
 
 
 @contextlib.contextmanager
-def _read(path, local=True, dump=False):
-    local_path = os.path.join(dump_dir, path)
+def _read(path, local=True, dump=True):
+    local_path = os.path.join(_conf['dump_dir'], path)
     if os.path.exists(local_path) and local:
         file = local_path
     else:
-        raw_data = dvc.api.read(path, repo=repo, mode='rb')
+        raw_data = dvc.api.read(path, repo=_conf['repo'], mode='rb')
         if dump:
             _dump(raw_data, local_path)
         file = io.BytesIO(raw_data)
