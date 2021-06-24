@@ -23,7 +23,8 @@ install data API through `pip`
 pip install https://github.com/remifan/labptptm2/archive/master.zip
 ```
 
-Load data. First time load might take sometime to download from remote, afterwards
+### Load data
+First time load might take sometime to download from remote, afterwards
 it will load from local file system
 
 ```python
@@ -38,8 +39,8 @@ data = labptptm2.load(1, 1, 4, 2)
 `load` calls `get` on first down loading, which simply fetches data from remote
 
 ```python
-# download single data
-labptptm2.get(1, 1, 4, 2) # 83 MB 
+# download single data (83 MB)
+labptptm2.get(1, 1, 4, 2)
 
 # download multiple files
 labptptm2.get(1, [1, 2], [1, 4, 7], 2)
@@ -65,7 +66,7 @@ data = labptptm2.load(1, 1, 4, 2) # load data with additional supplymentary data
 labptptm2.load(1, 1, 3, 2) # get now downloads supplymentary data too
 ```
 
-### manual load
+### manually open data file
 use `file` to load file manually, for example, load small amount of data to save loading time during testing
 ```python
 with labptptm2.file(1, 1, 4, 2) as hf:
@@ -74,5 +75,10 @@ with labptptm2.file(1, 1, 4, 2) as hf:
   a = dict(zip(fd.attrs.keys(), fd.attrs.values())) # extract hdf attributes
 # post process
 # ...
+
+# open supplymentary data
+with labptptm2.file(1, 1, 4, 2, supdata=True) as hf:
+  nfo = fd['nfo'][...] # coarsely monitored frequency offset evolution normalized to sample period
+  a['CD'] = fd.attrs['cd'] # measured chromatic dispersion
 ```
 
