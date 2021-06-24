@@ -10,7 +10,12 @@ setup diagram
 ![setup](./assets/setup.png)
 
 
-## data APIs
+## Quantum random source
+the transmitted quantum random source is generated through [quantumrand](https://pypi.org/project/quantumrand/),
+which wraps [ANU's QRNG API](https://qrng.anu.edu.au/) 
+
+
+## Data APIs
 ### install
 install data API through `pip`
 
@@ -50,9 +55,9 @@ files are saved to `./labptptm2_data` by default, to change that
 labptptm2.config(dump_dir={TARGET FOLDER}) # replace {TARGET FOLDER} with your path string
 ```
 
-### supplymentary data.
+### supplymentary data
 ```python
-labptptm2.config(supdata=True)
+labptptm2.config(supdata=True) # enable supplymentary data
 
 data = labptptm2.load(1, 1, 4, 2) # load data with additional supplymentary data (
                                   #   measured chromatic dispersion, frequency offset evolution)
@@ -60,9 +65,9 @@ data = labptptm2.load(1, 1, 4, 2) # load data with additional supplymentary data
 labptptm2.load(1, 1, 3, 2) # get now downloads supplymentary data too
 ```
 
-### manually load
+### manual load
 use `file` to load file manually, for example, load small amount of data to save loading time during testing
-```
+```python
 with labptptm2.file(1, 1, 4, 2) as hf:
   y = fd['recv'][:num * 2]
   x = fd['sent'][:num]
