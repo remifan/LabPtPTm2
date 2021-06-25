@@ -1,6 +1,7 @@
 # LabPtPTm2
 
 [![CC BY 4.0][cc-by-shield]][cc-by]
+[![DOI](https://img.shields.io/badge/doi-10.6084/m9.figshare.14843037-blue.svg)](https://doi.org/10.6084/m9.figshare.14843037.v1)
 
 1125km 7-channel DP-16QAM WDM transmission using quantum random source.
 This dataset was collected in Jan 2021.
@@ -97,6 +98,20 @@ with labptptm2.file(1, 1, 4, 2, supdata=True) as hf:
 ## How does this repo work?
 Work in progress...
 
+
+## Citing
+
+```
+@dataset{qrfanlabptptm2,
+  author    = {Qirui Fan and Chao Lu and Alan Pak Tao Lau},
+  title     = {1125km 7-channel DP-16QAM WDM transmission using quantum random source},
+  year      = {2021},
+  month     = "6",
+  url       = "https://github.com/remifan/LabPtPTm2"
+  doi       = {10.6084/m9.figshare.14843037},
+  publisher = {Figshare},
+}
+```
 
 ## Acknowledgement
 
