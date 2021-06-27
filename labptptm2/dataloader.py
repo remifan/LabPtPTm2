@@ -5,7 +5,7 @@ import dvc.api
 import contextlib
 import numpy as np
 from pathlib import Path
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 _conf = {'repo': 'https://github.com/remifan/LabPtPTm2',
          'supdata': False,
