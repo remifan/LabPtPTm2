@@ -37,8 +37,8 @@ it will load from local file system
 ```python
 import labptptm2
 
-# args 1, 0, 4, 2 means source index 1, launched power = 0 dBm, channel 4, repeats 3
-data = labptptm2.load(1, 1, 4, 2)
+# args 1, 0, 4, 2 means source label 1, launched power = 0 dBm, channel 4, 2nd repetition
+data = labptptm2.load(1, 0, 4, 2)
 ```
 
 the 4 input arguments above identify each collected sample.
@@ -92,7 +92,7 @@ with labptptm2.file(1, 1, 4, 2) as hf:
   y = fd['recv'][:num * 2]
   x = fd['sent'][:num]
   a = dict(zip(fd.attrs.keys(), fd.attrs.values())) # extract hdf attributes
-# post process
+# post processing
 # ...
 
 # open supplymentary data
