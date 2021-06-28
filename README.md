@@ -41,14 +41,21 @@ import labptptm2
 data = labptptm2.load(1, 1, 4, 2)
 ```
 
+the 4 input arguments above identify each collected sample.
+- arg#1: int, random source label, which can be either 1 or 2
+- arg#2: int, launched power in dBm unit, which is member of [-5, -4, -3, -2, -1, 0, 1, 2, 3]
+- arg#3: int, channel index, which is member of [1, 2, 3, 4, 5, 6, 7]
+- arg#4: int, index of repeated sampling under the same link configuration, can be member of [1, 2, 3]
+
+
 ### download data
-`load` calls `get` on first down loading, which simply fetches data from remote
+On first downloading, `load` calls `get` which fetches data from remote
 
 ```python
 # download single data (83 MB)
 labptptm2.get(1, 1, 4, 2)
 
-# download multiple files
+# get support download multiple files
 labptptm2.get(1, [1, 2], [1, 4, 7], 2)
 
 # download all datasets (24 GB)
@@ -73,7 +80,7 @@ labptptm2.config(supdata=True) # enable supplymentary data
 data = labptptm2.load(1, 1, 4, 2) # load data with additional supplymentary data (
                                   #   measured chromatic dispersion, coarse frequency offset evolution)
 
-labptptm2.load(1, 1, 3, 2) # get now downloads supplymentary data too
+labptptm2.get(1, 1, 3, 2) # get now downloads supplymentary data too
 ```
 
 ### load data on demand
@@ -93,10 +100,6 @@ with labptptm2.file(1, 1, 4, 2, supdata=True) as hf:
   nfo = fd['nfo'][...] # coarsely monitored frequency offset evolution normalized to sample period
   a['CD'] = fd.attrs['cd'] # measured chromatic dispersion
 ```
-
-
-## How does this repo work?
-Work in progress...
 
 
 ## Citing
