@@ -3,7 +3,7 @@
 [![CC BY 4.0][cc-by-shield]][cc-by]
 [![DOI](https://img.shields.io/badge/doi-10.6084/m9.figshare.14843037-blue.svg)](https://doi.org/10.6084/m9.figshare.14843037.v1)
 
-1125km 7-channel DP-16QAM WDM transmission using quantum random source.
+1125km 7-channel DP-16QAM WDM transmission using quantum random bit source.
 This dataset was collected in Jan 2021.
 
 [dataloader](#data-apis) is the easiest method to access this dataset if you using Python
@@ -55,7 +55,7 @@ On first downloading, `load` calls `get` which fetches data from remote
 # download single data (83 MB)
 labptptm2.get(1, 1, 4, 2)
 
-# get support download multiple files
+# `get` supports download multiple files
 labptptm2.get(1, [1, 2], [1, 4, 7], 2)
 
 # download all datasets (24 GB)
@@ -101,13 +101,16 @@ with labptptm2.file(1, 1, 4, 2, supdata=True) as hf:
   a['CD'] = fd.attrs['cd'] # measured chromatic dispersion
 ```
 
+## About this repo
+this repo does not contain the data ifself but serves as its registry, the raw data is stored in AWS S3 remote.
+
 
 ## Citing
 
 ```
 @dataset{qrfanlabptptm2,
   author    = {Qirui Fan and Chao Lu and Alan Pak Tao Lau},
-  title     = {1125km 7-channel DP-16QAM WDM transmission using quantum random source},
+  title     = {Dataset: 1125km 7-channel DP-16QAM WDM transmission using quantum random bit source},
   year      = {2021},
   month     = "6",
   url       = "https://github.com/remifan/LabPtPTm2"
