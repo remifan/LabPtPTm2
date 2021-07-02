@@ -37,7 +37,7 @@ it will load from local file system
 ```python
 import labptptm2
 
-# args 1, 0, 4, 2 means source label 1, launched power = 0 dBm, channel 4, 2nd repetition
+# args 1, 0, 4, 2 means source label 1, launched power = 0 dBm, channel 4, 2nd scope captures
 data = labptptm2.load(1, 0, 4, 2)
 ```
 
@@ -45,7 +45,7 @@ the 4 input arguments above identify each collected sample.
 - arg#1: int, random source label, which can be either 1 or 2
 - arg#2: int, launched power in dBm unit, which is member of [-5, -4, -3, -2, -1, 0, 1, 2, 3]
 - arg#3: int, channel index, which is member of [1, 2, 3, 4, 5, 6, 7]
-- arg#4: int, index of repeated sampling under the same link configuration, can be member of [1, 2, 3]
+- arg#4: int, index of scope captures under the same link configuration, can be member of [1, 2, 3]
 
 
 ### download data
