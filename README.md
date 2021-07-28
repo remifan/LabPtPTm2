@@ -37,7 +37,7 @@ it will load from local file system
 ```python
 import labptptm2
 
-# args 1, 0, 4, 2 means source label 1, launched power = 0 dBm, channel 4, 2nd scope captures
+# args 1, 0, 4, 2 means source label 1, launched power = 0 dBm, channel 4, 2nd scope capture
 data = labptptm2.load(1, 0, 4, 2)
 ```
 
@@ -89,16 +89,16 @@ one can load small amount of data to save IO overheads during testing. Such feat
 by [h5](https://www.h5py.org/) data format.
 ```python
 with labptptm2.file(1, 1, 4, 2) as hf:
-  y = fd['recv'][:num * 2]
-  x = fd['sent'][:num]
-  a = dict(zip(fd.attrs.keys(), fd.attrs.values())) # extract hdf attributes
+  y = hf['recv'][:num * 2]
+  x = hf['sent'][:num]
+  a = dict(zip(hf.attrs.keys(), hf.attrs.values())) # extract hdf attributes
 # post processing
 # ...
 
 # open supplymentary data
 with labptptm2.file(1, 1, 4, 2, supdata=True) as hf:
-  nfo = fd['nfo'][...] # coarsely monitored frequency offset evolution normalized to sample period
-  a['CD'] = fd.attrs['cd'] # measured chromatic dispersion
+  nfo = hf['nfo'][...] # coarsely monitored frequency offset evolution normalized to sample period
+  a['CD'] = hf.attrs['cd'] # measured chromatic dispersion
 ```
 
 ## About this repo
