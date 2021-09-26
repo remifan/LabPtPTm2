@@ -31,75 +31,7 @@ pip install https://github.com/remifan/labptptm2/archive/master.zip
 ```
 
 ### load data
-First time load might take sometime to download from remote, afterwards
-it will load from local file system
-
-```python
-import labptptm2
-
-# args 1, 0, 4, 2 means source label 1, launched power = 0 dBm, channel 4, 2nd scope capture
-data = labptptm2.load(1, 0, 4, 2)
-```
-
-the 4 input arguments above identify each collected sample.
-- arg#1: int, random source label, which can be either 1 or 2
-- arg#2: int, launched power in dBm unit, which is member of [-5, -4, -3, -2, -1, 0, 1, 2, 3]
-- arg#3: int, channel index, which is member of [1, 2, 3, 4, 5, 6, 7]
-- arg#4: int, index of scope captures under the same link configuration, can be member of [1, 2, 3]
-
-
-### download data
-On first downloading, `load` calls `get` which fetches data from remote
-
-```python
-# download single data (83 MB)
-labptptm2.get(1, 1, 4, 2)
-
-# `get` supports download multiple files
-labptptm2.get(1, [1, 2], [1, 4, 7], 2)
-
-# download all datasets (24 GB)
-labptptm2.get(range(1, 3), range(-5, 4), range(1, 8), range(1, 4))
-```
-
-files are saved to `./labptptm2_data` by default, to change that
-
-```python
-labptptm2.config(dump_dir={TARGET FOLDER}) # replace {TARGET FOLDER} with your path string
-```
-
-to force download and overwrite the existing
-```python
-labptptm2.config(local=False) # load and get will always download data from remote
-```
-
-### supplymentary data
-```python
-labptptm2.config(supdata=True) # enable supplymentary data
-
-data = labptptm2.load(1, 1, 4, 2) # load data with additional supplymentary data (
-                                  #   measured chromatic dispersion, coarse frequency offset evolution)
-
-labptptm2.get(1, 1, 3, 2) # get now downloads supplymentary data too
-```
-
-### load data on demand
-use `file` to load a segment of data without loading the whole data from disk, for example,
-one can load small amount of data to save IO overheads during testing. Such feature is realized
-by [h5](https://www.h5py.org/) data format.
-```python
-with labptptm2.file(1, 1, 4, 2) as hf:
-  y = hf['recv'][:num * 2]
-  x = hf['sent'][:num]
-  a = dict(zip(hf.attrs.keys(), hf.attrs.values())) # extract hdf attributes
-# post processing
-# ...
-
-# open supplymentary data
-with labptptm2.file(1, 1, 4, 2, supdata=True) as hf:
-  nfo = hf['nfo'][...] # coarsely monitored frequency offset evolution normalized to sample period
-  a['CD'] = hf.attrs['cd'] # measured chromatic dispersion
-```
+DVC-based APIs have been deprecated, instructions of Zarr-based APIs will be ready soon.
 
 ## About this repo
 this repo does not contain the data ifself but serves as its registry, the raw data is stored in AWS S3 remote.
