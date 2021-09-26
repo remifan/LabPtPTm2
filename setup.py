@@ -7,7 +7,7 @@ setup(name='labptptm2',
     version='0.2.0',
     packages=find_packages(),
     install_requires=[
-        'zarr[jupyter]',
+        'zarr[jupyter]==2.9.5',
         'fsspec',
         's3fs',
         'pyyaml'
