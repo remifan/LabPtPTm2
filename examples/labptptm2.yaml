@@ -1,3 +1,0 @@
-cache_storage: /tmp/labptptm2
-remote: s3://optcommpubdataqrfan/labptptm2_zarr
-store: null
