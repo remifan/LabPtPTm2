@@ -22,13 +22,13 @@ the transmitted quantum random source is generated through [quantumrand](https:/
 which wraps [ANU's QRNG restful API](https://qrng.anu.edu.au/) 
 
 
-## Access Data through APIs
-### install
+## Access Data
+### Install
 ```
 pip install https://github.com/remifan/labptptm2/archive/master.zip
 ```
 
-### usage
+### Usage
 please refer to this [Instructions](examples/basics.ipynb)
 
 
