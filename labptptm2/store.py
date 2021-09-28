@@ -4,9 +4,11 @@ import yaml
 import logging
 import tempfile
 import zarr
+import s3fs
 
 
 tempdir = os.path.join(tempfile.gettempdir(),'labptptm2')
+
 
 class Config:
     __slots__ = ['store', 'remote', 'cache_storage']
@@ -35,8 +37,8 @@ class Config:
                     self._update(conf)
                 break
 
-    def dump(self):
-        dump_path = os.path.join(os.getcwd(), 'labptptm2.yaml')
+    def dump(self, tardir=os.getcwd()):
+        dump_path = os.path.join(tardir, 'labptptm2.yaml')
         d = {}
         for k in self.__slots__:
             d[k] = getattr(self, k)
@@ -49,6 +51,9 @@ class Config:
         cwd = os.getcwd()
         paths.append(cwd)
         return paths
+
+    def __repr__(self):
+        return f"store: {self.store}\nremote: {self.remote}\ncache_storage: {self.cache_storage}"
 
 
 config = Config()
@@ -81,6 +86,13 @@ def open_group(store=None, **kwargs):
         root = zarr.open_consolidated(store, **kwargs)
         
     return root
+
+
+def clone_store(dest, **kwargs):
+    local_store = zarr.storage.DirectoryStore(dest)
+    s3 = s3fs.S3FileSystem(anon=True)
+    s3store = s3fs.S3Map(root=config.remote.replace('s3://', ''), s3=s3, check=False)
+    zarr.convenience.copy_store(s3store, local_store, **kwargs)
 
 
 def help():

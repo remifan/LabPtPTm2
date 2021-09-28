@@ -22,16 +22,15 @@ the transmitted quantum random source is generated through [quantumrand](https:/
 which wraps [ANU's QRNG restful API](https://qrng.anu.edu.au/) 
 
 
-## Data APIs
+## Access Data through APIs
 ### install
-install data API through `pip`
-
 ```
 pip install https://github.com/remifan/labptptm2/archive/master.zip
 ```
 
-### load data
-DVC-based APIs have been deprecated, instructions of Zarr-based APIs will be ready soon.
+### usage
+please refer to this [Instructions](examples/basics.ipynb)
+
 
 ## About this repo
 this repo does not contain the data ifself but serves as its registry, the raw data is stored in AWS S3 remote.
@@ -55,11 +54,6 @@ this repo does not contain the data ifself but serves as its registry, the raw d
 
 thanks to ANU's [QRNG web service](https://qrng.anu.edu.au/)
 
-
-## ToDo
-
-- add instructions for non-Python users, e.g. download data using `dvc` cli
-- data APIs for Matlab (to solve: matlab's `h5read` lacks lzf filter)
 
 ## License
 
