@@ -23,7 +23,7 @@ which wraps [ANU's QRNG restful API](https://qrng.anu.edu.au/)
 
 
 ## Access Data
-### Install
+### Install Data APIs
 ```
 pip install https://github.com/remifan/labptptm2/archive/master.zip
 ```
@@ -50,7 +50,7 @@ this repo does not contain the data ifself but serves as its registry, the raw d
 }
 ```
 
-## Acknowledgement
+## Acknowledgements
 
 thanks to ANU's [QRNG web service](https://qrng.anu.edu.au/)
 
