@@ -23,6 +23,8 @@ which wraps [ANU's QRNG restful API](https://qrng.anu.edu.au/)
 
 
 ## Access Data
+this repo only hosts data APIs, raw data is stored in the AWS S3 remote.
+
 ### Install Data APIs
 ```
 pip install https://github.com/remifan/labptptm2/archive/master.zip
@@ -30,10 +32,6 @@ pip install https://github.com/remifan/labptptm2/archive/master.zip
 
 ### Usage
 please refer to this [Instructions](examples/basics.ipynb)
-
-
-## About this repo
-this repo does not contain the data ifself but serves as its registry, the raw data is stored in AWS S3 remote.
 
 
 ## Citing
