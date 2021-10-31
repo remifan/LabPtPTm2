@@ -30,7 +30,10 @@ def select(SRC, LP, CH, REP) -> Tuple[List[zarr.Group], List[zarr.Group]]:
 
     for t in targets:
         dat_grps.append(droot[_datapath(*t)])
-        sup_grps.append(droot[_supdatapath(*t)])
+        try:
+            sup_grps.append(droot[_supdatapath(*t)])
+        except KeyError:  # supdata is not available
+            sup_grps.append(None)
 
     return dat_grps, sup_grps
 
