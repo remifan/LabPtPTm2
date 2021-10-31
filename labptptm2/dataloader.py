@@ -52,3 +52,16 @@ def _datapath(src, lp, ch, rep):
 def _supdatapath(src, lp, ch, rep):
     return 'supdata/src%d/%ddBm_ch%d_%d' % (src, lp, ch, rep)
 
+
+def help():
+    print(
+        'arguments:\n',
+        '  the 4 input arguments of select identify each collected data file: \n',
+        '  arg#1: int, random source sequence identifier, which can be either 1 or 2 \n',
+        '  arg#2: int, launched power in dBm unit, which must be a member of [-5, -4, -3, -2, -1, 0, 1, 2, 3] \n',
+        '  arg#3: int, channel index, which is member of [1, 2, 3, 4, 5, 6, 7] \n',
+        '  arg#4: int, index of scope captures under the same link configuration, a member of [1, 2, 3] \n',
+        'returns:\n',
+        '  a tuple of data gorup and supplementary data group (None if not available)\n',
+        'see more on: https://github.com/remifan/LabPtPTm2/blob/master/examples/basics.ipynb'
+    )

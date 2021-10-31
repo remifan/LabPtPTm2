@@ -95,8 +95,3 @@ def clone_store(dest, **kwargs):
     zarr.convenience.copy_store(s3store, local_store, **kwargs)
 
 
-def help():
-    '''ToDo'''
-    pass
-
-
