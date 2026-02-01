@@ -6,8 +6,6 @@
 1125km 7-channel DP-16QAM WDM transmission using quantum random bit source.
 This dataset was collected in Jan 2021.
 
-[dataloader](#data-apis) is the easiest method to access this dataset if you using Python
-
 ## Experimental Setup 
 
 our experimental link
