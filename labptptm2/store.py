@@ -3,8 +3,10 @@ import io
 import yaml
 import logging
 import tempfile
+import warnings
 import zarr
 import s3fs
+import fsspec
 
 
 tempdir = os.path.join(tempfile.gettempdir(),'labptptm2')
@@ -60,7 +62,7 @@ config = Config()
 
 
 def open_group(store=None, **kwargs):
-    ''' the read-only version of zarr.open_group 
+    ''' the read-only version of zarr.open_group
 
     The dataset should have been consolidated which enables fastest metadata
     navigation without traversing the actual data.
@@ -77,21 +79,61 @@ def open_group(store=None, **kwargs):
         # reference:
         #   https://zarr.readthedocs.io/en/stable/tutorial.html#io-with-fsspec
         #   https://filesystem-spec.readthedocs.io/en/latest/features.html#caching-files-locally
-        root = zarr.open_consolidated("simplecache::" + config.remote,
-                                      storage_options={"s3": {'anon': True},
-                                                       "simplecache": {'cache_storage': config.cache_storage}},
-                                      **kwargs)
+        # Note: suppress the async warning from zarr since simplecache doesn't support async mode
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', message='.*asynchronous.*', category=UserWarning)
+            root = zarr.open_group("simplecache::" + config.remote,
+                                   mode='r',
+                                   storage_options={"s3": {'anon': True},
+                                                    "simplecache": {'cache_storage': config.cache_storage}},
+                                   use_consolidated=True,
+                                   zarr_format=2,
+                                   **kwargs)
     else:
         # open local store
-        root = zarr.open_consolidated(store, **kwargs)
-        
+        root = zarr.open_group(store, mode='r', use_consolidated=True, zarr_format=2, **kwargs)
+
     return root
 
 
-def clone_store(dest, **kwargs):
-    local_store = zarr.storage.DirectoryStore(dest)
+def clone_store(dest, log=None, **kwargs):
+    '''Clone the entire remote store to a local directory.
+
+    Uses fsspec to copy files from S3 to local storage.
+
+    Parameters
+    ----------
+    dest : str
+        Destination directory path
+    log : file-like, optional
+        File object to write progress logs (e.g., sys.stdout)
+    '''
+    os.makedirs(dest, exist_ok=True)
     s3 = s3fs.S3FileSystem(anon=True)
-    s3store = s3fs.S3Map(root=config.remote.replace('s3://', ''), s3=s3, check=False)
-    zarr.convenience.copy_store(s3store, local_store, **kwargs)
+    remote_path = config.remote.replace('s3://', '')
+
+    # Get list of all files in the remote store
+    all_files = s3.find(remote_path)
+
+    for i, remote_file in enumerate(all_files):
+        # Compute relative path and local destination
+        rel_path = remote_file[len(remote_path):].lstrip('/')
+        local_path = os.path.join(dest, rel_path)
+
+        # Create parent directories if needed
+        local_dir = os.path.dirname(local_path)
+        if local_dir:
+            os.makedirs(local_dir, exist_ok=True)
+
+        # Copy file
+        s3.get(remote_file, local_path)
+
+        if log is not None:
+            log.write(f"\r[{i+1}/{len(all_files)}] Copying: {rel_path}")
+            log.flush()
+
+    if log is not None:
+        log.write("\nDone.\n")
+        log.flush()
 
 
