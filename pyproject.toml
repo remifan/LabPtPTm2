@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "labptptm2"
+version = "0.3.0"
+description = "1125km 7-channel DP-16QAM WDM transmission using quantum random bit source"
+readme = "README.md"
+license = "CC-BY-4.0"
+requires-python = ">=3.8"
+dependencies = [
+    "zarr>=3.0",
+    "fsspec",
+    "s3fs",
+    "pyyaml",
+    "rich",
+]
+
+[project.urls]
+Homepage = "https://github.com/remifan/LabPtPTm2"
+
+[tool.setuptools.packages.find]
+include = ["labptptm2*"]
