@@ -50,6 +50,9 @@ please refer to this [Instructions](examples/basics.ipynb)
 
 thanks to ANU's [QRNG web service](https://qrng.anu.edu.au/)
 
+## See also
+
+[LabPtPTm1](https://github.com/remifan/LabPtPTm1) - 815km DP-16QAM SSMF transmission data (Aug 2019)
 
 ## License
 
