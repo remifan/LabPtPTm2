@@ -25,7 +25,7 @@ this repo only hosts data APIs, raw data is stored in the AWS S3 remote.
 
 ### Install Data APIs
 ```
-pip install https://github.com/remifan/labptptm2/archive/master.zip
+pip install https://github.com/remifan/labptptm2/archive/main.zip
 ```
 
 ### Usage
