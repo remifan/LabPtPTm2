@@ -20,6 +20,38 @@ the transmitted quantum random source is generated through [quantumrand](https:/
 which wraps [ANU's QRNG restful API](https://qrng.anu.edu.au/) 
 
 
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph S3["AWS S3 (Remote)"]
+        zarr["Zarr Store<br/>s3://optcommpubdataqrfan/labptptm2_zarr<br/>~27 GB, anonymous access"]
+    end
+
+    subgraph Cache["Local Cache Layer"]
+        sc["simplecache (fsspec)<br/>on-demand download + caching"]
+        clone["clone_store()<br/>full local copy"]
+    end
+
+    subgraph API["Python API (labptptm2)"]
+        og["open_group()<br/>zarr.open_group wrapper<br/>consolidated metadata"]
+        dl["select(SRC, LP, CH, REP)<br/>dataloader with validation"]
+    end
+
+    subgraph User["User"]
+        grp["zarr.Group objects<br/>dat_grp, sup_grp"]
+        data["recv[:] / sent[:]<br/>complex64 arrays"]
+    end
+
+    zarr -->|"anon=True"| sc
+    zarr -->|"s3fs copy"| clone
+    sc --> og
+    clone --> og
+    og --> dl
+    dl -->|"returns"| grp
+    grp -->|"lazy slicing"| data
+```
+
 ## Access Data
 this repo only hosts data APIs, raw data is stored in the AWS S3 remote.
 
